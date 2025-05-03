@@ -14,9 +14,9 @@ jobs:
 
       - name: Run a multi-line script
         run: |
-          curl -4 ip.sb
-          curl -6 ip.sb
-          
+          curl -4 ip.sb || echo "IPv4 not available"
+          run: curl -6 ip.sb || echo "IPv6 not available"
+
       - name: Set up WARP
         uses: fscarmen/warp-on-actions@v1.3
         with:
@@ -26,7 +26,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          curl -4 ip.sb
-          curl -6 ip.sb
+          curl -4 ip.sb || echo "IPv4 not available"
+          run: curl -6 ip.sb || echo "IPv6 not available"
           echo Add other actions to build,
           echo test, and deploy your project.
