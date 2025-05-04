@@ -1,0 +1,42 @@
+# action.yml
+name: 'Install WARP'
+author: 'test <test@gmail.com>'
+description: 'Install Cloudflare Warp on Github actions'
+
+inputs:
+  stack:
+    description: 'Choose WARP stacks: IPv4/IPv6 only or dualstacks.ipv4/ipv6/dual/proxy'
+    required: false
+    default: 'dual'
+
+runs:
+  using: composite
+  steps:
+    - name: Install WARP
+      run: |
+        # Add cloudflare gpg key
+        curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+        # Add this repo to your apt repositories
+        echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+        # Install
+        sudo apt-get update && sudo apt-get install -y cloudflare-warp
+        sudo warp-cli --accept-tos registration new
+        if [ "${{ inputs.stack }}" == 'ipv4' ]; then
+          echo "WARP mode: client warp+doh.ipv4"
+          sudo warp-cli --accept-tos mode warp+doh
+          sudo warp-cli --accept-tos tunnel ip add-range ::0/0
+        elif [ "${{ inputs.stack }}" == 'ipv6' ]; then
+          echo "WARP mode: client warp+doh.ipv6"
+          sudo warp-cli --accept-tos mode warp+doh
+          sudo warp-cli --accept-tos tunnel ip add-range 0.0.0.0/0
+        elif [ "${{ inputs.stack }}" == 'dual' ]; then
+          echo "WARP mode: client warp+doh. dual "
+          sudo warp-cli --accept-tos mode warp+doh
+        elif [ "${{ inputs.stack }}" == 'proxy' ]; then
+          echo "WARP mode: client proxy."
+          sudo warp-cli --accept-tos mode proxy
+        fi
+        sudo warp-cli --accept-tos connect
+
+
+      shell: bash
