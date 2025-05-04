@@ -25,7 +25,7 @@ runs:
           echo "WARP mode: client proxy."
           sudo warp-cli --accept-tos mode proxy
           sudo warp-cli --accept-tos connect
-          sudo warp-cli settings
+          sudo warp-cli --accept-tos settings
           echo -e "===============================\nIP:"
           echo "IPv4: $(sudo curl -s4m8 --retry 3 -A Mozilla https://api.ip.sb/geoip)"
           echo "IPv4_proxy: $(sudo curl -x socks5h://localhost:40000 -s4m8 --retry 3 -A Mozilla https://api.ip.sb/geoip)"
@@ -42,7 +42,7 @@ runs:
             echo "WARP mode: client warp+doh. dual "            
           fi
           sudo warp-cli --accept-tos connect
-          sudo warp-cli settings
+          sudo warp-cli --accept-tos settings
           sleep 1
           echo -e "===============================\nIP:"
           echo "IPv4: $(sudo curl -s4m8 --retry 3 -A Mozilla https://api.ip.sb/geoip)"
