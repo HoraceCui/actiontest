@@ -26,8 +26,9 @@ runs:
           sudo warp-cli --accept-tos mode proxy
           sudo warp-cli --accept-tos connect
           sudo warp-cli --accept-tos settings
-          sudo ss -tulnp | grep :40000|| true
-          sudo ss -tulnp | grep warp|| true
+          sudo ss -ltnp | grep 40000 || echo "端口未监听"
+          sudo lsof -i :40000 || echo "lsof 也未找到"
+          sudo ss -tulnp | grep warp|| echo "warp 也未找到"
 
           echo -e "===============================\nIP:"
           echo "IPv4: $(sudo curl -s4m8 --retry 3 -A Mozilla https://api.ip.sb/geoip)"
