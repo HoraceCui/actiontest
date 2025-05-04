@@ -27,6 +27,8 @@ runs:
           sudo warp-cli --accept-tos connect
           sudo warp-cli --accept-tos settings
           sudo ss -tulnp | grep :40000|| true
+          sudo ss -tulnp | grep warp|| true
+
           echo -e "===============================\nIP:"
           echo "IPv4: $(sudo curl -s4m8 --retry 3 -A Mozilla https://api.ip.sb/geoip)"
           echo "IPv4_proxy: $(sudo curl -x socks5h://localhost:40000 -s4m8 --retry 3 -A Mozilla https://api.ip.sb/geoip)"
