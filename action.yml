@@ -31,7 +31,7 @@ runs:
 
         elif [ "${{ inputs.stack }}" == 'ipv4' ] || [ "${{ inputs.stack }}" == 'ipv6' ] || [ "${{ inputs.stack }}" == 'dual' ]; then
           sudo warp-cli --accept-tos mode warp+doh
-          if [ "${{ inputs.stack }}" == 'ipv4' ]  then
+          if [ "${{ inputs.stack }}" == 'ipv4' ] ; then
             echo "WARP mode: client warp+doh.ipv4"            
             sudo warp-cli --accept-tos tunnel ip add-range ::0/0
           elif [ "${{ inputs.stack }}" == 'ipv6' ]; then
